@@ -12,19 +12,39 @@ import android.widget.Toast;
 
 public class LocationBroadcastReceiver extends BroadcastReceiver {
     private String TAG = "LocationBroadcastReceiver";
+    private MainActivityInf mainActivityInf;
+    public static int UNIQUE_ID = 0;
+    public static String LOCATION_CHANGE = "location_changed";
+    public static String ACTION = "action";
+
+
+    public LocationBroadcastReceiver(MainActivityInf mainActivityInf) {
+        this.mainActivityInf = mainActivityInf;
+
+    }
+/*    public LocationBroadcastReceiver() {
+        UNIQUE_ID++;
+    }*/
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive");
-
+        Log.d(TAG, "ID:" + UNIQUE_ID);
         if (intent.hasExtra(LocationManager.KEY_LOCATION_CHANGED)) {
 
-            String locationKey = LocationManager.KEY_LOCATION_CHANGED;
-            Location location = (Location) intent.getExtras().get(locationKey);
+            String locationChanged = LocationManager.KEY_LOCATION_CHANGED;
+            Location location = (Location) intent.getExtras().get(locationChanged);
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
+            Log.d(TAG, latitude + "," + longitude);
+            mainActivityInf.DisplayLocationChange(latitude + "," + longitude);
 
-            Log.d(TAG,  latitude+","+longitude);
-            Toast.makeText(context, latitude+","+longitude, Toast.LENGTH_LONG).show();
+        }
+
+        if (intent.hasExtra(LocationManager.KEY_PROVIDER_ENABLED)) {
+
+            String providerEnabled = LocationManager.KEY_PROVIDER_ENABLED;
+            boolean isEnabled = intent.getBooleanExtra(providerEnabled, false);
+            //mainActivityInf.DisplayProviderEnable(isEnabled);
 
         }
     }
