@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.Serializable;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -147,10 +145,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private MainActivityInf mainActivityInf2=new MainActivityInf() {
+    private MainActivityInf mainActivityInf2 = new MainActivityInf() {
         @Override
         public void DisplayLocationChange(String location) {
-            Log.d(TAG,"Location: "+location);
+            Log.d(TAG, "Location: " + location);
             txtLocation.setText(location);
         }
 

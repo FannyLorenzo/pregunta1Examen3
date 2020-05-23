@@ -1,13 +1,11 @@
 package com.idnp.samplelocationservice;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
-import android.widget.Toast;
 
 
 public class LocationBroadcastReceiver extends BroadcastReceiver {
