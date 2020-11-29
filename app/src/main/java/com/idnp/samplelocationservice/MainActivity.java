@@ -19,48 +19,34 @@ import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private LocationBroadcastReceiver broadcastReceiver;
+    private LocationBroadcastReceiver broadcastReceiver ;
     private TextView txtLocation;
     private TextView txtProvider;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        broadcastReceiver = new LocationBroadcastReceiver(mainActivityInf2);
-
         checkLocationPermission();
+       broadcastReceiver = new LocationBroadcastReceiver(mainActivityInf);
+        //broadcastReceiver = new LocationBroadcastReceiver();
 
-        Button btnService = (Button) findViewById(R.id.btnService);
-        Button btnIntentService = (Button) findViewById(R.id.btnIntentService);
+        Button btnStart = (Button) findViewById(R.id.btnStart);
+
         txtLocation = (TextView) findViewById(R.id.textViewLocation);
         txtProvider = (TextView) findViewById(R.id.textViewProvider);
 
-        btnService.setOnClickListener(new View.OnClickListener() {
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                Log.d(TAG, "LocationService start");
-                Intent myservice = new Intent(getApplicationContext(), LocationService.class);
-                startService(myservice);
-
+            public void onClick(View v) {
+                initGPS();
             }
         });
 
-        btnIntentService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Log.d(TAG, "LocationIntentService start");
-                Intent myintentservice = new Intent(getApplicationContext(), LocationIntentService.class);
-                startService(myintentservice);
 
-            }
-        });
     }
 
     @Override
@@ -70,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(LocationManager.KEY_LOCATION_CHANGED);
             registerReceiver(broadcastReceiver, intentFilter);
-        } else {
-            Log.d(TAG, "broadcastReceiver is null");
         }
     }
 
@@ -122,8 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void initGPS() {
 
-        //Intent intent = new Intent(this, LocationBroadcastReceiver.class);
-        Intent intent = new Intent(LocationManager.KEY_LOCATION_CHANGED);
+      Intent intent = new Intent(this, LocationBroadcastReceiver.class);
+
+     //  Intent intent = new Intent(LocationManager.KEY_LOCATION_CHANGED);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(//sendBroadcast(...)
                 this,
@@ -138,28 +123,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // NETWORK_PROVIDER
                 0,
                 0,
                 pendingIntent);
 
     }
 
-    private MainActivityInf mainActivityInf2 = new MainActivityInf() {
+    private MainActivityInf mainActivityInf = new MainActivityInf() {
         @Override
         public void DisplayLocationChange(String location) {
             Log.d(TAG, "Location: " + location);
             txtLocation.setText(location);
+            txtProvider.setText("");  // mmm este está medio raro
         }
 
-        @Override
-        public void DisplayProviderEnable(boolean isEnabled) {
-            if (isEnabled) {
-                txtProvider.setText("Location is enabled");
-            } else {
-                txtProvider.setText("Location is not enabled");
-            }
-        }
     };
 
 }

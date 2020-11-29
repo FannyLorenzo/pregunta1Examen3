@@ -15,14 +15,11 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     public static String LOCATION_CHANGE = "location_changed";
     public static String ACTION = "action";
 
-
+    public LocationBroadcastReceiver() {
+    }
     public LocationBroadcastReceiver(MainActivityInf mainActivityInf) {
         this.mainActivityInf = mainActivityInf;
-
     }
-/*    public LocationBroadcastReceiver() {
-        UNIQUE_ID++;
-    }*/
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -34,16 +31,8 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             Log.d(TAG, latitude + "," + longitude);
-            mainActivityInf.DisplayLocationChange(latitude + "," + longitude);
 
-        }
-
-        if (intent.hasExtra(LocationManager.KEY_PROVIDER_ENABLED)) {
-
-            String providerEnabled = LocationManager.KEY_PROVIDER_ENABLED;
-            boolean isEnabled = intent.getBooleanExtra(providerEnabled, false);
-            //mainActivityInf.DisplayProviderEnable(isEnabled);
-
+            mainActivityInf.DisplayLocationChange(latitude+","+longitude); //
         }
     }
 }
